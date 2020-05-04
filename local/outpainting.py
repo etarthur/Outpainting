@@ -1,35 +1,22 @@
-# Basile Van Hoorick, Jan 2020
-
-import copy
-import cv2
 import glob
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
-import pickle
-import random
-import scipy
 import shutil
 import skimage
-import time
 import torch
-import torch.nn.functional as F
-import torchvision
 import os
-from bisect import bisect_left, bisect_right
 from collections import defaultdict, OrderedDict
 from html4vision import Col, imagetable
 from PIL import Image
 from scipy.ndimage.morphology import distance_transform_edt
-from skimage import io
-from torch import nn, optim
+from torch import nn
 from torch.autograd import Variable
-from torchvision import datasets, transforms, models, utils
 from torchvision.utils import save_image
 from torch.utils.data import Dataset, DataLoader
-from tqdm import tqdm
 
 from local import util
+from local import layers
 
 input_size = 128
 output_size = 192
@@ -39,9 +26,9 @@ patch_h = output_size // 8
 patch = (1, patch_h, patch_w)
 
 
-class CEGenerator(nn.Module):
+class Generator(nn.Module):
     def __init__(self, channels=3, extra_upsample=False):
-        super(CEGenerator, self).__init__()
+        super(Generator, self).__init__()
 
         def downsample(in_feat, out_feat, normalize=True):
             layers = [nn.Conv2d(in_feat, out_feat, 4, stride=2, padding=1)]
@@ -93,9 +80,9 @@ class CEGenerator(nn.Module):
         return self.model(x)
 
 
-class CEGlobalDiscriminator(nn.Module):
+class GlobalDiscriminator(nn.Module):
     def __init__(self, channels=3):
-        super(CEGlobalDiscriminator, self).__init__()
+        super(GlobalDiscriminator, self).__init__()
         self.output_shape = (24, 24)
 
         def discriminator_block(in_filters, out_filters, stride, normalize):
@@ -117,9 +104,68 @@ class CEGlobalDiscriminator(nn.Module):
         self.model = nn.Sequential(*layers)
 
     def forward(self, img):
-        x = self.model(img)
-        print('CEDiscriminator shape', x.shape)
         return self.model(img)
+
+
+class LocalDiscriminator(nn.Module):
+    def __init__(self, mask, channels=3):
+        super(LocalDiscriminator, self).__init__()
+        self.output_shape = (24, 24)
+
+        def discriminator_block(in_filters, out_filters, stride, normalize):
+            """Returns layers of each discriminator block"""
+            layers = [nn.Conv2d(in_filters, out_filters, 3, stride, 1)]
+            if normalize:
+                layers.append(nn.InstanceNorm2d(out_filters))
+            layers.append(nn.LeakyReLU(0.2, inplace=True))
+            return layers
+
+        layers = []
+        in_filters = channels
+        for out_filters, stride, normalize in [(64, 2, False), (128, 2, True), (256, 2, True), (512, 1, True)]:
+            layers.extend(discriminator_block(in_filters, out_filters, stride, normalize))
+            in_filters = out_filters
+
+        layers.append(nn.Conv2d(out_filters, 1, 3, 1, 1))
+
+        self.model = nn.Sequential(*layers)
+
+    def forward(self, img, mask):
+        img = img * mask
+        return self.model(img)
+
+
+class ContextDiscriminator(nn.Module):
+    def __init__(self, local_input_shape, global_input_shape, arc='places2'):
+        super(ContextDiscriminator, self).__init__()
+        self.arc = arc
+        self.input_shape = [local_input_shape, global_input_shape]
+        # TODO: For outpainting, local and global discriminator shapes are equal
+        assert(local_input_shape == global_input_shape)
+        self.output_shape = (1,)
+
+        # self.model_ld = LocalDiscriminator(local_input_shape)
+        self.model_ld = LocalDiscriminator(local_input_shape)
+
+        # self.model_gd = GlobalDiscriminator(global_input_shape, arc=arc)
+        self.model_gd = GlobalDiscriminator()
+
+        # TODO: Remove, this stuff gets handled afterwards
+        self.concat1 = layers.Concatenate(dim=-1)
+        self.flatten1 = nn.Flatten()
+        in_features = self.model_ld.output_shape[-1] ** 2 + self.model_gd.output_shape[-1] ** 2
+        self.linear1 = nn.Linear(in_features, 1)
+        self.act1 = nn.Sigmoid()
+
+    def forward(self, x, mask):
+        x_ld = self.model_ld(x, mask)
+        x_gd = self.model_gd(x)
+        # concat = self.concat1([self.flatten1(x_ld), self.flatten1(x_gd)])
+        # print('concatenated and flattened discriminator outputs', concat.shape)
+        # lin = self.linear1(concat)
+        # out = self.act1(lin)
+        out = (x_ld + x_gd) / 2
+        return out
 
 
 def construct_masked(input_img):
@@ -210,7 +256,7 @@ def perform_outpaint(gen_model, input_img, blend_width=8):
 
 
 def load_model(model_path):
-    model = CEGenerator(extra_upsample=True)
+    model = Generator(extra_upsample=True)
     state_dict = torch.load(model_path, map_location=torch.device('cpu'))
 
     # Remove 'module' if present
@@ -251,13 +297,12 @@ class CEImageDataset(Dataset):
         # Get upper-left pixel coordinate
         i = (self.output_size - self.input_size) // 2
         
-        if not(self.outpaint):
-            masked_part = img[:, i : i + self.input_size, i : i + self.input_size]
+        if not self.outpaint:
+            masked_part = img[:, i:i + self.input_size, i:i + self.input_size]
             masked_img = img.clone()
-            masked_img[:, i : i + self.input_size, i : i + self.input_size] = 1
-            
+            masked_img[:, i:i + self.input_size, i:i + self.input_size] = 1
         else:
-            masked_part = -1 # ignore this for outpainting
+            masked_part = -1  # ignore this for outpainting
             masked_img = img.clone()
             masked_img[:, :i, :] = 1
             masked_img[:, -i:, :] = 1
@@ -352,12 +397,12 @@ def get_adv_weight(adv_weight, epoch):
             return adv_weight[2]
         else:
             return adv_weight[3]
-    else: # just one number
+    else:  # just one number
         return adv_weight
 
 
-def train_CE(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimizer_D, data_loaders,
-             model_save_path, html_save_path, n_epochs=200, start_epoch=0, adv_weight=0.001):
+def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimizer_D, data_loaders,
+          model_save_path, html_save_path, n_epochs=200, start_epoch=0, adv_weight=0.001):
     '''
     Based on Context Encoder implementation in PyTorch.
     '''
@@ -409,10 +454,7 @@ def train_CE(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, opti
                 #     loss_pxl = criterion_pxl(outputs, masked_parts)  # inpaint: compare center part only
                 # else:
                 loss_pxl = criterion_pxl(outputs, imgs)  # outpaint: compare to full ground truth
-                print('loss_pxl', loss_pxl)
-                y_hat = D_net(outputs)
-                print('discriminator results y_hat', y_hat.shape, y_hat)
-                print('valid target for MSE loss', valid.shape)
+                y_hat = D_net(outputs, mask)
 
                 loss_adv = criterion_D(y_hat, valid)
                 # Total loss
@@ -431,9 +473,9 @@ def train_CE(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, opti
                 # if not(outpaint):
                 #     real_loss = criterion_D(D_net(masked_parts), valid) # inpaint: check center part only
                 # else:
-                real_loss = criterion_D(D_net(imgs), valid)  # outpaint: check full ground truth
+                real_loss = criterion_D(D_net(imgs, mask), valid)  # outpaint: check full ground truth
 
-                fake_loss = criterion_D(D_net(outputs.detach()), fake)
+                fake_loss = criterion_D(D_net(outputs.detach(), mask), fake)
                 loss_D = 0.5 * (real_loss + fake_loss)
                 if phase == 'train':
                     loss_D.backward()

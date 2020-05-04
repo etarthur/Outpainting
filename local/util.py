@@ -1,5 +1,4 @@
 import torch
-import torchvision
 
 
 def gen_mask(shape, input_size=128, output_size=192):
@@ -10,7 +9,7 @@ def gen_mask(shape, input_size=128, output_size=192):
     :param shape: Shape of mask tensor to be generated like (num, channel, height, width)
     :param input_size:
     :param output_size:
-    :returns: Mask tensor where pixels indicating mask are filled with 1.0
+    :returns: Mask tensor where pixels indicating mask are filled with 1. and rest are 0.
     """
     expand_size = (output_size - input_size) // 2
     mask = torch.zeros(shape)

@@ -1,10 +1,9 @@
-# Basile Van Hoorick, Jan 2020
 '''
 Hallucinates beyond all four edges of an image, increasing both dimensions by 50%.
-The outpainting process interally converts 128x128 to 192x192, after which the generated output is upscaled.
+The outpainting process internally converts 128x128 to 192x192, after which the generated output is upscaled.
 Then, the original input is blended onto the result for optimal fidelity.
-Example usage:
-python forward.py input.jpg output.jpg
+
+Example usage: python forward.py input.jpg output.jpg
 '''
 
 if __name__ == '__main__':
