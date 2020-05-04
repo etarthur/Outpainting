@@ -19,5 +19,4 @@ def gen_mask(shape, input_size=128, output_size=192):
         mask[i, :, :, :expand_size] = 1.
         mask[i, :, -expand_size:, :] = 1.
         mask[i, :, :, -expand_size:] = 1.
-    torchvision.utils.save_image(mask, "mask.jpg")
     return mask
