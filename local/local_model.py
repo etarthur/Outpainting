@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from local import outpainting
+
 
 class Flatten(nn.Module):
     def __init__(self):
@@ -71,10 +73,12 @@ class CompletionNetwork(nn.Module):
         self.conv12 = nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1)
         self.bn12 = nn.BatchNorm2d(256)
         self.act12 = nn.ReLU()
+        # Here lies the latent space, with m feature maps of size n x n, total parameters m * n ^ 4
         # input_shape: (None, 256, img_h//4, img_w//4)
         self.deconv13 = nn.ConvTranspose2d(256, 128, kernel_size=4, stride=2, padding=1)
         self.bn13 = nn.BatchNorm2d(128)
         self.act13 = nn.ReLU()
+        # The channel-wise fully-connected layer is followed by a 1 stride convolution layer to propagate information across channels
         # input_shape: (None, 128, img_h//2, img_w//2)
         self.conv14 = nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1)
         self.bn14 = nn.BatchNorm2d(128)
@@ -105,11 +109,13 @@ class CompletionNetwork(nn.Module):
         x = self.bn10(self.act10(self.conv10(x)))
         x = self.bn11(self.act11(self.conv11(x)))
         x = self.bn12(self.act12(self.conv12(x)))
+        print('latent space shape is', x.shape)
         x = self.bn13(self.act13(self.deconv13(x)))
         x = self.bn14(self.act14(self.conv14(x)))
         x = self.bn15(self.act15(self.deconv15(x)))
         x = self.bn16(self.act16(self.conv16(x)))
         x = self.act17(self.conv17(x))
+        print('Completion shape is', x.shape)
         return x
 
 
@@ -226,10 +232,13 @@ class ContextDiscriminator(nn.Module):
     def __init__(self, local_input_shape, global_input_shape, arc='places2'):
         super(ContextDiscriminator, self).__init__()
         self.arc = arc
-        # self.input_shape = [local_input_shape, global_input_shape]
+        self.input_shape = [local_input_shape, global_input_shape]
+        # TODO: For outpainting, local and global discriminator shapes are equal
+        assert(local_input_shape == global_input_shape)
         self.output_shape = (1,)
         self.model_ld = LocalDiscriminator(local_input_shape)
-        self.model_gd = GlobalDiscriminator(global_input_shape, arc=arc)
+        # self.model_gd = GlobalDiscriminator(global_input_shape, arc=arc)
+        self.model_gd = outpainting.CEGlobalDiscriminator()
         # input_shape: [(None, 1024), (None, 1024)]
         in_features = self.model_ld.output_shape[-1] + self.model_gd.output_shape[-1]
         self.concat1 = Concatenate(dim=-1)
@@ -239,9 +248,11 @@ class ContextDiscriminator(nn.Module):
         # output_shape: (None, 1)
 
     def forward(self, x):
-        print(x.shape, x)
-        x_ld, x_gd = x, x
-        x_ld = self.model_ld(x_ld)
-        x_gd = self.model_gd(x_gd)
+        print('context discriminator input x', x.shape, x)
+        x_ld = self.model_ld(x)
+        x_gd = self.model_gd(x)
+        print('local discriminator output shape', x_ld.shape)
+        print('global discriminator output shape', x_gd.shape)
         out = self.act1(self.linear1(self.concat1([x_ld, x_gd])))
+
         return out

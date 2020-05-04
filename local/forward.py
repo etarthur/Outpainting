@@ -10,7 +10,7 @@ python forward.py input.jpg output.jpg
 if __name__ == '__main__':
 
     import sys
-    from outpainting import *
+    from local.outpainting import *
 
     print("PyTorch version: ", torch.__version__)
     print("Torchvision version: ", torchvision.__version__)

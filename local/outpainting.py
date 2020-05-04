@@ -29,7 +29,7 @@ from torchvision.utils import save_image
 from torch.utils.data import Dataset, DataLoader
 from tqdm import tqdm
 
-import util
+from local import util
 
 input_size = 128
 output_size = 192
@@ -93,9 +93,10 @@ class CEGenerator(nn.Module):
         return self.model(x)
 
 
-class CEDiscriminator(nn.Module):
+class CEGlobalDiscriminator(nn.Module):
     def __init__(self, channels=3):
-        super(CEDiscriminator, self).__init__()
+        super(CEGlobalDiscriminator, self).__init__()
+        self.output_shape = (24, 24)
 
         def discriminator_block(in_filters, out_filters, stride, normalize):
             """Returns layers of each discriminator block"""
@@ -116,6 +117,8 @@ class CEDiscriminator(nn.Module):
         self.model = nn.Sequential(*layers)
 
     def forward(self, img):
+        x = self.model(img)
+        print('CEDiscriminator shape', x.shape)
         return self.model(img)
 
 
@@ -408,7 +411,8 @@ def train_CE(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, opti
                 loss_pxl = criterion_pxl(outputs, imgs)  # outpaint: compare to full ground truth
                 print('loss_pxl', loss_pxl)
                 y_hat = D_net(outputs)
-                print('discriminator results', y_hat)
+                print('discriminator results y_hat', y_hat.shape, y_hat)
+                print('valid target for MSE loss', valid.shape)
 
                 loss_adv = criterion_D(y_hat, valid)
                 # Total loss
@@ -427,7 +431,7 @@ def train_CE(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, opti
                 # if not(outpaint):
                 #     real_loss = criterion_D(D_net(masked_parts), valid) # inpaint: check center part only
                 # else:
-                real_loss = criterion_D(D_net(imgs), valid) # outpaint: check full ground truth
+                real_loss = criterion_D(D_net(imgs), valid)  # outpaint: check full ground truth
 
                 fake_loss = criterion_D(D_net(outputs.detach()), fake)
                 loss_D = 0.5 * (real_loss + fake_loss)

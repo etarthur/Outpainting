@@ -1,8 +1,7 @@
 # Basile Van Hoorick, Jan 2020
 import torch
-from outpainting import *
-import local_model as local
-from util import gen_mask
+from local import local_model
+from local.outpainting import *
 
 '''
 Edit the paths here and run to train the GAN.
@@ -16,9 +15,9 @@ if __name__ == '__main__':
     # Define paths
     model_save_path = 'outpaint_models'
     html_save_path = 'outpaint_html'
-    train_dir = 'train'
-    val_dir = 'val'
-    test_dir = 'test'
+    train_dir = '../train'
+    val_dir = '../val'
+    test_dir = '../test'
 
     # Define datasets & transforms
     my_tf = transforms.Compose([
@@ -40,10 +39,10 @@ if __name__ == '__main__':
     # device = torch.device('cpu')
     # G_net = CEGenerator(extra_upsample=True)
     # D_net = CEDiscriminator()
-    G_net = local.CompletionNetwork()
+    G_net = local_model.CompletionNetwork()
     # D_net = local.GlobalDiscriminator((output_size, ), arc='places2')
     # LD_net = local.LocalDiscriminator((output_size, ))
-    CD_net = local.ContextDiscriminator((3, output_size, output_size), (3, output_size, output_size), arc='places2')
+    CD_net = local_model.ContextDiscriminator((3, output_size, output_size), (3, output_size, output_size), arc='places2')
     G_net.apply(weights_init_normal)
     CD_net.apply(weights_init_normal)
     # G_net = nn.DataParallel(G_net)
@@ -53,19 +52,27 @@ if __name__ == '__main__':
     print('device:', device)
 
     # Define losses
-    criterion_pxl = nn.L1Loss()
-    criterion_D = nn.MSELoss()
-    optimizer_G = optim.Adam(G_net.parameters(), lr=3e-4, betas=(0.5, 0.999))
-    optimizer_D = optim.Adam(CD_net.parameters(), lr=3e-4, betas=(0.5, 0.999))
-    criterion_pxl.to(device)
-    criterion_D.to(device)
+    # criterion_pxl = nn.L1Loss()
+    # criterion_D = nn.MSELoss()
+    # optimizer_G = optim.Adam(G_net.parameters(), lr=3e-4, betas=(0.5, 0.999))
+    # optimizer_D = optim.Adam(CD_net.parameters(), lr=3e-4, betas=(0.5, 0.999))
+    # criterion_pxl.to(device)
+    # criterion_D.to(device)
 
     # Start training
     data_loaders = {'train': train_loader, 'val': val_loader, 'test': test_loader}  # NOTE: test is evidently not used by the train method
     n_epochs = 200
     adv_weight = [0.001, 0.005, 0.015, 0.040]  # corresponds to epochs 1-10, 10-30, 30-60, 60-onwards
-    hist_loss = train_CE(G_net, CD_net, device, criterion_pxl, criterion_D, optimizer_G, optimizer_D, data_loaders,
-                         model_save_path, html_save_path, n_epochs=n_epochs, adv_weight=adv_weight)
+    hist_loss = train_CE(G_net, CD_net, device,
+                         criterion_pxl=nn.L1Loss().to(device),
+                         criterion_D=nn.MSELoss().to(device),
+                         optimizer_G=optim.Adam(G_net.parameters(), lr=3e-4, betas=(0.5, 0.999)),
+                         optimizer_D=optim.Adam(CD_net.parameters(), lr=3e-4, betas=(0.5, 0.999)),
+                         data_loaders=data_loaders,
+                         model_save_path=model_save_path,
+                         html_save_path=html_save_path,
+                         n_epochs=n_epochs,
+                         adv_weight=adv_weight)
 
     # Save loss history and final generator
     pickle.dump(hist_loss, open('hist_loss.p', 'wb'))
