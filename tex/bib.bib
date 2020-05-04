@@ -1,0 +1,256 @@
+@article{Hoorick2019ImageOA,
+  title={Image Outpainting and Harmonization using Generative Adversarial Networks},
+  author={Basile Van Hoorick},
+  journal={ArXiv},
+  year={2019},
+  volume={abs/1912.10960}
+}
+
+
+
+
+@article{Wang2019,
+author = {Wang, Yi and Tao, Xin and Shen, Xiaoyong and Jia, Jiaya},
+doi = {10.1109/CVPR.2019.00149},
+isbn = {9781728132938},
+issn = {10636919},
+journal = {Proceedings of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition},
+keywords = {Deep Learning,Image and Video Synthesis},
+pages = {1399--1408},
+title = {{Wide-context semantic image extrapolation}},
+url = {http://jiaya.me/papers/imgextrapolation{\_}cvpr19.pdf},
+volume = {2019-June},
+year = {2019}
+}
+
+@article{Radford2016,
+abstract = {In recent years, supervised learning with convolutional networks (CNNs) has seen huge adoption in computer vision applications. Comparatively, unsupervised learning with CNNs has received less attention. In this work we hope to help bridge the gap between the success of CNNs for supervised learning and unsupervised learning. We introduce a class of CNNs called deep convolutional generative adversarial networks (DCGANs), that have certain architectural constraints, and demonstrate that they are a strong candidate for unsupervised learning. Training on various image datasets, we show convincing evidence that our deep convolutional adversarial pair learns a hierarchy of representations from object parts to scenes in both the generator and discriminator. Additionally, we use the learned features for novel tasks - demonstrating their applicability as general image representations.},
+archivePrefix = {arXiv},
+arxivId = {1511.06434},
+author = {Radford, Alec and Metz, Luke and Chintala, Soumith},
+eprint = {1511.06434},
+journal = {4th International Conference on Learning Representations, ICLR 2016 - Conference Track Proceedings},
+pages = {1--16},
+title = {{Unsupervised representation learning with deep convolutional generative adversarial networks}},
+year = {2016}
+}
+
+@article{Goodfellow2014,
+abstract = {We propose a new framework for estimating generative models via an adversarial process, in which we simultaneously train two models: a generative model G that captures the data distribution, and a discriminative model D that estimates the probability that a sample came from the training data rather than G. The training procedure for G is to maximize the probability of D making a mistake. This framework corresponds to a minimax two-player game. In the space of arbitrary functions G and D, a unique solution exists, with G recovering the training data distribution and D equal to 1/2 everywhere. In the case where G and D are defined by multilayer perceptrons, the entire system can be trained with backpropagation. There is no need for any Markov chains or unrolled approximate inference networks during either training or generation of samples. Experiments demonstrate the potential of the framework through qualitative and quantitative evaluation of the generated samples.},
+archivePrefix = {arXiv},
+arxivId = {1406.2661},
+author = {Goodfellow, Ian J. and Pouget-Abadie, Jean and Mirza, Mehdi and Xu, Bing and Warde-Farley, David and Ozair, Sherjil and Courville, Aaron and Bengio, Yoshua},
+eprint = {1406.2661},
+pages = {1--9},
+title = {{Generative Adversarial Networks}},
+url = {http://arxiv.org/abs/1406.2661},
+year = {2014}
+}
+
+@article{Pathak2016,
+abstract = {We present an unsupervised visual feature learning algorithm driven by context-based pixel prediction. By analogy with auto-encoders, we propose Context Encoders - a convolutional neural network trained to generate the contents of an arbitrary image region conditioned on its surroundings. In order to succeed at this task, context encoders need to both understand the content of the entire image, as well as produce a plausible hypothesis for the missing part(s). When training context encoders, we have experimented with both a standard pixel-wise reconstruction loss, as well as a reconstruction plus an adversarial loss. The latter produces much sharper results because it can better handle multiple modes in the output. We found that a context encoder learns a representation that captures not just appearance but also the semantics of visual structures. We quantitatively demonstrate the effectiveness of our learned features for CNN pre-training on classification, detection, and segmentation tasks. Furthermore, context encoders can be used for semantic inpainting tasks, either stand-alone or as initialization for non-parametric methods.},
+archivePrefix = {arXiv},
+arxivId = {1604.07379},
+author = {Pathak, Deepak and Krahenbuhl, Philipp and Donahue, Jeff and Darrell, Trevor and Efros, Alexei A.},
+doi = {10.1109/CVPR.2016.278},
+eprint = {1604.07379},
+isbn = {9781467388504},
+issn = {10636919},
+journal = {Proceedings of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition},
+pages = {2536--2544},
+title = {{Context Encoders: Feature Learning by Inpainting}},
+volume = {2016-Decem},
+year = {2016}
+}
+
+@article{Iizuka2017,
+abstract = {We present a novel approach for image completion that results in images that are both locally and globally consistent. With a fully-convolutional neural network, we can complete images of arbitrary resolutions by filling-in missing regions of any shape. To train this image completion network to be consistent, we use global and local context discriminators that are trained to distinguish real images from completed ones. The global discriminator looks at the entire image to assess if it is coherent as a whole, while the local discriminator looks only at a small area centered at the completed region to ensure the local consistency of the generated patches. The image completion network is then trained to fool the both context discriminator networks, which requires it to generate images that are indistinguishable from real ones with regard to overall consistency as well as in details. We show that our approach can be used to complete a wide variety of scenes. Furthermore, in contrast with the patch-based approaches such as PatchMatch, our approach can generate fragments that do not appear elsewhere in the image, which allows us to naturally complete the images of objects with familiar and highly specific structures, such as faces.},
+author = {Iizuka, Satoshi and Simo-Serra, Edgar and Ishikawa, Hiroshi},
+doi = {10.1145/3072959.3073659},
+issn = {15577368},
+journal = {ACM Transactions on Graphics},
+keywords = {Convolutional neural network,Image completion},
+number = {4},
+title = {{Globally and locally consistent image completion}},
+volume = {36},
+year = {2017}
+}
+
+@article{Yeh2017,
+abstract = {Semantic image inpainting is a challenging task where large missing regions have to be filled based on the available visual data. Existing methods which extract information from only a single image generally produce unsatisfactory results due to the lack of high level context. In this paper, we propose a novel method for semantic image inpainting, which generates the missing content by conditioning on the available data. Given a trained generative model, we search for the closest encoding of the corrupted image in the latent image manifold using our context and prior losses. This encoding is then passed through the generative model to infer the missing content. In our method, inference is possible irrespective of how the missing content is structured, while the state-of-the-art learning based method requires specific information about the holes in the training phase. Experiments on three datasets show that our method successfully predicts information in large missing regions and achieves pixel-level photorealism, significantly outperforming the state-of-the-art methods.},
+author = {Yeh, Raymond A. and Chen, Chen and {Yian Lim}, Teck and Schwing, Alexander G. and Hasegawa-Johnson, Mark and Do, Minh N.},
+doi = {10.1109/CVPR.2017.728},
+isbn = {9781538604571},
+journal = {Proceedings - 30th IEEE Conference on Computer Vision and Pattern Recognition, CVPR 2017},
+pages = {6882--6890},
+title = {{Semantic image inpainting with deep generative models}},
+volume = {2017-Janua},
+year = {2017}
+}
+
+@article{Sabini2018,
+abstract = {The challenging task of image outpainting (extrapolation) has received comparatively little attention in relation to its cousin, image inpainting (completion). Accordingly, we present a deep learning approach based on Iizuka et al. for adversarially training a network to hallucinate past image boundaries. We use a three-phase training schedule to stably train a DCGAN architecture on a subset of the Places365 dataset. In line with Iizuka et al., we also use local discriminators to enhance the quality of our output. Once trained, our model is able to outpaint {\$}128 \backslashtimes 128{\$} color images relatively realistically, thus allowing for recursive outpainting. Our results show that deep learning approaches to image outpainting are both feasible and promising.},
+archivePrefix = {arXiv},
+arxivId = {1808.08483},
+author = {Sabini, Mark and Rusak, Gili},
+eprint = {1808.08483},
+title = {{Painting Outside the Box: Image Outpainting with GANs}},
+url = {http://arxiv.org/abs/1808.08483},
+year = {2018}
+}
+
+@article{Li2018,
+abstract = {In recent times, image inpainting has witnessed rapid progress due to the generative adversarial networks (GANs) that are able to synthesize realistic contents. However, most existing GAN-based methods for semantic inpainting apply an auto-encoder architecture with a fully connected layer, which cannot accurately maintain spatial information. In addition, the discriminator in existing GANs struggles to comprehend high-level semantics within the image context and yields semantically consistent content. Existing evaluation criteria are biased toward blurry results and cannot well characterize edge preservation and visual authenticity in the inpainting results. In this paper, we propose an improved GAN to overcome the aforementioned limitations. Our proposed GAN-based framework consists of a fully convolutional design for the generator which helps to better preserve spatial structures and a joint loss function with a revised perceptual loss to capture high-level semantics in the context. Furthermore, we also introduce two novel measures to better assess the quality of image inpainting results. The experimental results demonstrate that our method outperforms the state-of-the-art under a wide range of criteria.},
+archivePrefix = {arXiv},
+arxivId = {1712.07778},
+author = {Li, Haofeng and Li, Guanbin and Lin, Liang and Yu, Hongchuan and Yu, Yizhou},
+doi = {10.1109/TCYB.2018.2865036},
+eprint = {1712.07778},
+issn = {21682267},
+journal = {IEEE Transactions on Cybernetics},
+keywords = {Convolution,Convolutional neural network,Feature extraction,Gallium nitride,Generative adversarial networks,Kernel,Loss measurement,Semantics,generative adversarial network (GAN),image inpainting},
+number = {8},
+pages = {1--12},
+title = {{Context-Aware Semantic Inpainting}},
+volume = {14},
+year = {2018}
+}
+
+@article{Shaham2019,
+abstract = {We introduce SinGAN, an unconditional generative model that can be learned from a single natural image. Our model is trained to capture the internal distribution of patches within the image, and is then able to generate high quality, diverse samples that carry the same visual content as the image. SinGAN contains a pyramid of fully convolutional GANs, each responsible for learning the patch distribution at a different scale of the image. This allows generating new samples of arbitrary size and aspect ratio, that have significant variability, yet maintain both the global structure and the fine textures of the training image. In contrast to previous single image GAN schemes, our approach is not limited to texture images, and is not conditional (i.e. it generates samples from noise). User studies confirm that the generated samples are commonly confused to be real images. We illustrate the utility of SinGAN in a wide range of image manipulation tasks.},
+archivePrefix = {arXiv},
+arxivId = {1905.01164},
+author = {Shaham, Tamar Rott and Dekel, Tali and Michaeli, Tomer},
+eprint = {1905.01164},
+month = {may},
+title = {{SinGAN: Learning a Generative Model from a Single Natural Image}},
+url = {http://arxiv.org/abs/1905.01164},
+year = {2019}
+}
+
+@article{Doersch2015,
+abstract = {This work explores the use of spatial context as a source of free and plentiful supervisory signal for training a rich visual representation. Given only a large, unlabeled image collection, we extract random pairs of patches from each image and train a convolutional neural net to predict the position of the second patch relative to the first. We argue that doing well on this task requires the model to learn to recognize objects and their parts. We demonstrate that the feature representation learned using this within-image context indeed captures visual similarity across images. For example, this representation allows us to perform unsupervised visual discovery of objects like cats, people, and even birds from the Pascal VOC 2011 detection dataset. Furthermore, we show that the learned ConvNet can be used in the R-CNN framework and provides a significant boost over a randomly-initialized ConvNet, resulting in state-of-the-art performance among algorithms which use only Pascal-provided training set annotations.},
+archivePrefix = {arXiv},
+arxivId = {arXiv:1505.05192v3},
+author = {Doersch, Carl and Gupta, Abhinav and Efros, Alexei A.},
+doi = {10.1109/ICCV.2015.167},
+eprint = {arXiv:1505.05192v3},
+isbn = {9781467383912},
+issn = {15505499},
+journal = {Proceedings of the IEEE International Conference on Computer Vision},
+pages = {1422--1430},
+title = {{Unsupervised visual representation learning by context prediction}},
+volume = {2015 Inter},
+year = {2015}
+}
+
+
+@article{Noroozi2016,
+abstract = {We propose a novel unsupervised learning approach to build features suitable for object detection and classification. The features are pre-trained on a large dataset without human annotation and later transferred via fine-tuning on a different, smaller and labeled dataset. The pre-training consists of solving jigsaw puzzles of natural images. To facilitate the transfer of features to other tasks, we introduce the context-free network (CFN), a siamese-ennead convolutional neural network. The features correspond to the columns of the CFN and they process image tiles independently (i.e., free of context). The later layers of the CFN then use the features to identify their geometric arrangement. Our experimental evaluations show that the learned features capture semantically relevant content. We pre-train the CFN on the training set of the ILSVRC2012 dataset and transfer the features on the combined training and validation set of Pascal VOC 2007 for object detection (via fast RCNN) and classification. These features outperform all current unsupervised features with 51.8{\%} for detection and 68.6{\%} for classification, and reduce the gap with supervised learning (56.5{\%} and 78.2{\%} respectively).},
+archivePrefix = {arXiv},
+arxivId = {1603.09246},
+author = {Noroozi, Mehdi and Favaro, Paolo},
+doi = {10.1007/978-3-319-46466-4_5},
+eprint = {1603.09246},
+isbn = {9783319464657},
+issn = {16113349},
+journal = {Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics)},
+keywords = {Feature transfer,Image representation learning,Self-supervised learning,Unsupervised learning},
+pages = {69--84},
+title = {{Unsupervised learning of visual representations by solving jigsaw puzzles}},
+volume = {9910 LNCS},
+year = {2016}
+}
+
+@article{Noroozi2017,
+abstract = {We introduce a novel method for representation learning that uses an artificial supervision signal based on counting visual primitives. This supervision signal is obtained from an equivariance relation, which does not require any manual annotation. We relate transformations of images to transformations of the representations. More specifically, we look for the representation that satisfies such relation rather than the transformations that match a given representation. In this paper, we use two image transformations in the context of counting: scaling and tiling. The first transformation exploits the fact that the number of visual primitives should be invariant to scale. The second transformation allows us to equate the total number of visual primitives in each tile to that in the whole image. These two transformations are combined in one constraint and used to train a neural network with a contrastive loss. The proposed task produces representations that perform on par or exceed the state of the art in transfer learning benchmarks.},
+annote = {- Chromatic abberration = "bug"},
+archivePrefix = {arXiv},
+arxivId = {1708.06734},
+author = {Noroozi, Mehdi and Pirsiavash, Hamed and Favaro, Paolo},
+doi = {10.1109/ICCV.2017.628},
+eprint = {1708.06734},
+isbn = {9781538610329},
+issn = {15505499},
+journal = {Proceedings of the IEEE International Conference on Computer Vision},
+pages = {5899--5907},
+title = {{Representation Learning by Learning to Count}},
+volume = {2017-Octob},
+year = {2017}
+}
+
+@article{Larsson2017,
+abstract = {We investigate and improve self-supervision as a dropin replacement for ImageNet pretraining, focusing on automatic colorization as the proxy task. Self-supervised training has been shown to be more promising for utilizing unlabeled data than other, traditional unsupervised learning methods. We build on this success and evaluate the ability of our self-supervised network in several contexts. On VOC segmentation and classification tasks, we present results that are state-of-the-art among methods not using ImageNet labels for pretraining representations. Moreover, we present the first in-depth analysis of self-supervision via colorization, concluding that formulation of the loss, training details and network architecture play important roles in its effectiveness. This investigation is further expanded by revisiting the ImageNet pretraining paradigm, asking questions such as: How much training data is needed? How many labels are needed? How much do features change when fine-tuned? We relate these questions back to self-supervision by showing that colorization provides a similarly powerful supervisory signal as various flavors of ImageNet pretraining.},
+archivePrefix = {arXiv},
+arxivId = {1703.04044},
+author = {Larsson, Gustav and Maire, Michael and Shakhnarovich, Gregory},
+doi = {10.1109/CVPR.2017.96},
+eprint = {1703.04044},
+isbn = {9781538604571},
+journal = {Proceedings - 30th IEEE Conference on Computer Vision and Pattern Recognition, CVPR 2017},
+pages = {840--849},
+title = {{Colorization as a proxy task for visual understanding}},
+volume = {2017-Janua},
+year = {2017}
+}
+
+@article{Mescheder2018,
+abstract = {GAN training for absolutely continuous data and generator distributions. In this paper, we show that the requirement of absolute continuity is necessary: we describe a simple yet prototypical counterexample showing that in the more realistic case of distributions that are not absolutely continuous, unregularized GAN training is not always convergent. Furthermore, we discuss reg- ularization strategies that were recently proposed to stabilize GAN training. Our analysis shows that GAN training with instance noise or zero- centered gradient penalties converges. On the other hand, we show that Wasserstein-GANs and WGAN-GP with a finite number of discriminator updates per generator update do not always converge to the equilibrium point. We discuss these results, leading us to a new explanation for the stability problems of GAN training. Based on our analysis, we extend our convergence results to more general GANs and prove local convergence for simplified gradient penalties even if the generator and data distributions lie on lower dimensional manifolds. We find these penalties to work well in practice and use them to learn high- resolution generative image models for a variety of datasets with little hyperparameter tuning.},
+archivePrefix = {arXiv},
+arxivId = {1801.04406},
+author = {Mescheder, Lars and Geiger, Andreas and Nowozin, Sebastian},
+eprint = {1801.04406},
+isbn = {9781510867963},
+journal = {35th International Conference on Machine Learning, ICML 2018},
+pages = {5589--5626},
+title = {{Which training methods for GANs do actually converge?}},
+volume = {8},
+year = {2018}
+}
+
+@article{Zhang2013,
+abstract = {We significantly extrapolate the field of view of a photograph by learning from a roughly aligned, wide-angle guide image of the same scene category. Our method can extrapolate typical photos into complete panoramas. The extrapolation problem is formulated in the shift-map image synthesis framework. We analyze the self-similarity of the guide image to generate a set of allowable local transformations and apply them to the input image. Our guided shift-map method reserves to the scene layout of the guide image when extrapolating a photograph. While conventional shift-map methods only support translations, this is not expressive enough to characterize the self-similarity of complex scenes. Therefore we additionally allow image transformations of rotation, scaling and reflection. To handle this increase in complexity, we introduce a hierarchical graph optimization method to choose the optimal transformation at each output pixel. We demonstrate our approach on a variety of indoor, outdoor, natural, and man-made scenes. {\textcopyright} 2013 IEEE.},
+author = {Zhang, Yinda and Xiao, Jianxiong and Hays, James and Tan, Ping},
+doi = {10.1109/CVPR.2013.155},
+issn = {10636919},
+journal = {Proceedings of the IEEE Computer Society Conference on Computer Vision and Pattern Recognition},
+keywords = {guided shift-map,image extrapolation,panorama},
+pages = {1171--1178},
+title = {{Framebreak: Dramatic image extrapolation by guided shift-maps}},
+year = {2013}
+}
+
+@misc{snapseed,
+title={Snapseed - Apps on Google Play},
+url={https://play.google.com/store/apps/details?id=com.niksoftware.snapseed},
+publisher={Google}, year={2018}, month={Jun},
+journal={https://play.google.com/store/apps/details?id=com.niksoftware.snapseed}}
+
+@article{Zhou2018,
+abstract = {The rise of multi-million-item dataset initiatives has enabled data-hungry machine learning algorithms to reach near-human semantic classification performance at tasks such as visual object and scene recognition. Here we describe the Places Database, a repository of 10 million scene photographs, labeled with scene semantic categories, comprising a large and diverse list of the types of environments encountered in the world. Using the state-of-the-art Convolutional Neural Networks (CNNs), we provide scene classification CNNs (Places-CNNs) as baselines, that significantly outperform the previous approaches. Visualization of the CNNs trained on Places shows that object detectors emerge as an intermediate representation of scene classification. With its high-coverage and high-diversity of exemplars, the Places Database along with the Places-CNNs offer a novel resource to guide future progress on scene recognition problems.},
+author = {Zhou, Bolei and Lapedriza, Agata and Khosla, Aditya and Oliva, Aude and Torralba, Antonio},
+doi = {10.1109/TPAMI.2017.2723009},
+issn = {01628828},
+journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+keywords = {Scene classification,deep feature,deep learning,image dataset,visual recognition},
+number = {6},
+pages = {1452--1464},
+pmid = {28692961},
+title = {{Places: A 10 Million Image Database for Scene Recognition}},
+volume = {40},
+year = {2018}
+}
+
+@article{Huang2018,
+abstract = {There has been a drastic growth of research in Generative Adversarial Nets (GANs) in the past few years. Proposed in 2014, GAN has been applied to various applications such as computer vision and natural language processing, and achieves impressive performance. Among the many applications of GAN, image synthesis is the most well-studied one, and research in this area has already demonstrated the great potential of using GAN in image synthesis. In this paper, we provide a taxonomy of methods used in image synthesis, review different models for text-to-image synthesis and image-to-image translation, and discuss some evaluation metrics as well as possible future research directions in image synthesis with GAN.},
+archivePrefix = {arXiv},
+arxivId = {1803.04469},
+author = {Huang, He and Yu, Philip S. and Wang, Changhu},
+eprint = {1803.04469},
+pages = {1--17},
+title = {{An Introduction to Image Synthesis with Generative Adversarial Nets}},
+url = {http://arxiv.org/abs/1803.04469},
+year = {2018}
+}
+
+@misc{wikiart, title={WikiArt: Visual Art Encyclopedia}, url={https://www.wikiart.org/}, journal={www.wikiart.org}}
