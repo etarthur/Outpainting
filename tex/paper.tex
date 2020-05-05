@@ -1,0 +1,142 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% ICML 2017 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Use the following line _only_ if you're still using LaTeX 2.09.
+%\documentstyle[cs541,epsf,natbib]{article}
+% If you rely on Latex2e packages, like most moden people use this:
+\documentclass{article}
+
+% use Times
+\usepackage{times}
+% For figures
+\usepackage{graphicx} % more modern
+%\usepackage{epsfig} % less modern
+\usepackage{subfigure} 
+
+% For citations
+\usepackage{natbib}
+
+% For algorithms
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% As of 2011, we use the hyperref package to produce hyperlinks in the
+% resulting PDF.  If this breaks your system, please commend out the
+% following usepackage line and replace \usepackage{cs541} with
+% \usepackage[nohyperref]{cs541} above.
+\usepackage{hyperref}
+
+% Packages hyperref and algorithmic misbehave sometimes.  We can fix
+% this with the following command.
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+\usepackage[accepted]{cs541}
+
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+\icmltitlerunning{Title of My Paper}
+
+\begin{document} 
+
+\twocolumn[
+\icmltitle{Title of My Paper}
+
+% It is OKAY to include author information, even for blind
+% submissions: the style file will automatically remove it for you
+% unless you've provided the [accepted] option to the icml2017
+% package.
+
+% list of affiliations. the first argument should be a (short)
+% identifier you will use later to specify author affiliations
+% Academic affiliations should list Department, University, City, Region, Country
+% Industry affiliations should list Company, City, Region, Country
+
+% you can specify symbols, otherwise they are numbered in order
+% ideally, you should not use this facility. affiliations will be numbered
+% in order of appearance and this is the preferred way.
+\icmlsetsymbol{equal}{*}
+
+\begin{icmlauthorlist}
+\icmlauthor{Aeiau Zzzz}{wpi}
+\icmlauthor{Bauiu C.~Yyyy}{wpi}
+\end{icmlauthorlist}
+
+\icmlaffiliation{wpi}{Worcester Polytechnic Institute}
+
+\icmlcorrespondingauthor{Cieua Vvvvv}{c.vvvvv@wpi.edu}
+
+% You may provide any keywords that you 
+% find helpful for describing your paper; these are used to populate 
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{boring formatting information, machine learning, ICML}
+
+\vskip 0.3in
+]
+
+% this must go after the closing bracket ] following \twocolumn[ ...
+
+% This command actually creates the footnote in the first column
+% listing the affiliations and the copyright notice.
+% The command takes one argument, which is text to display at the start of the footnote.
+% The \icmlEqualContribution command is standard text for equal contribution.
+% Remove it (just {}) if you do not need this facility.
+
+\printAffiliationsAndNotice{}  % leave blank if no need to mention equal contribution
+%\printAffiliationsAndNotice{\icmlEqualContribution} % otherwise use the standard text.
+%\footnotetext{hi}
+
+\begin{abstract} 
+Describe {\bf briefly} the computational problem you tackled, the approach you explored, the analyses you performed, and the results you obtained.
+Point out advantages of your approach compared to prior approaches (if any).
+\end{abstract} 
+
+\section{Introduction}
+{\bf Problem before solution}:
+Begin by describing a (computational) {\bf problem} and why the problem is {\bf important}. If previous research has
+explored plausible solutions to solve the problem, then point out how these approaches may be lacking. Then briefly {\bf motivate}
+why a new approach (the approach you explore in this paper) is worth exploring. Don't go into too much detail yet how it works -- that will
+be left for Section \ref{sec:proposed_method}).
+
+\subsection{Research contributions}
+Describe clearly and concisely what your paper {\bf uniquely} contributes to the research community, i.e., that has never been done before.
+
+\section{Related Work}
+Describe previous approaches (in somewhat greater detail than the introduction) to tackling the problem. Pick any citation style you prefer and use it
+consistently (here's a random citation \cite{mitchell80}). Explain how previous work may be lacking in certain ways, and use your critical review
+of prior work to further motivate your research.
+
+\section{Proposed Method}
+\label{sec:proposed_method}
+Describe the computational approach -- based obviously on neural networks -- that you took to tackle the problem.
+
+\section{Experiment}
+Describe the computational experiments you conducted to validate the approach you took.
+
+\section{Results}
+Describe the results of the experiments, including their immediate implications (e.g., ``the result suggests that technique A performs better
+than technique B''). If your work is purely theoretical, then this section (as well as the previous section) might be replaced with mathematical proofs.
+
+\section{Discussion}
+Describe limitations of your work as well as further-ranging implications (e.g., ``our work suggests that doing XYZ in general may be a useful approach to...'').
+
+\section{Conclusions and Future Work}
+Briefly summarize the key findings your paper and point out interesting directions for future inquiry.
+
+\bibliography{example_paper}
+\bibliographystyle{cs541}
+
+\end{document} 
+
+
+% This document was modified from the file originally made available by
+% Pat Langley and Andrea Danyluk for ICML-2K. This version was
+% created by Lise Getoor and Tobias Scheffer, it was slightly modified  
+% from the 2010 version by Thorsten Joachims & Johannes Fuernkranz, 
+% slightly modified from the 2009 version by Kiri Wagstaff and 
+% Sam Roweis's 2008 version, which is slightly modified from 
+% Prasad Tadepalli's 2007 version which is a lightly 
+% changed version of the previous year's version by Andrew Moore, 
+% which was in turn edited from those of Kristian Kersting and 
+% Codrina Lauth. Alex Smola contributed to the algorithmic style files.  
