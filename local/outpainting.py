@@ -403,9 +403,24 @@ def get_adv_weight(adv_weight, epoch):
 
 def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimizer_D, data_loaders,
           model_save_path, html_save_path, n_epochs=200, start_epoch=0, adv_weight=0.001):
-    '''
-    Based on Context Encoder implementation in PyTorch.
-    '''
+    """
+    Outpainting GAN training loop based on Context Encoder implementation in PyTorch.
+
+    :param G_net:
+    :param D_net:
+    :param device:
+    :param criterion_pxl:
+    :param criterion_D:
+    :param optimizer_G:
+    :param optimizer_D:
+    :param data_loaders:
+    :param model_save_path:
+    :param html_save_path:
+    :param n_epochs:
+    :param start_epoch:
+    :param adv_weight:
+    :return:
+    """
     Tensor = torch.cuda.FloatTensor
     hist_loss = defaultdict(list)
     
@@ -454,9 +469,7 @@ def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimiz
                 #     loss_pxl = criterion_pxl(outputs, masked_parts)  # inpaint: compare center part only
                 # else:
                 loss_pxl = criterion_pxl(outputs, imgs)  # outpaint: compare to full ground truth
-                y_hat = D_net(outputs, mask)
-
-                loss_adv = criterion_D(y_hat, valid)
+                loss_adv = criterion_D(D_net(outputs, mask), valid)
                 # Total loss
                 cur_adv_weight = get_adv_weight(adv_weight, epoch)
                 loss_G = (1 - cur_adv_weight) * loss_pxl + cur_adv_weight * loss_adv
@@ -473,8 +486,8 @@ def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimiz
                 # if not(outpaint):
                 #     real_loss = criterion_D(D_net(masked_parts), valid) # inpaint: check center part only
                 # else:
+                # TODO: need to clarify real vs fake loss here
                 real_loss = criterion_D(D_net(imgs, mask), valid)  # outpaint: check full ground truth
-
                 fake_loss = criterion_D(D_net(outputs.detach(), mask), fake)
                 loss_D = 0.5 * (real_loss + fake_loss)
                 if phase == 'train':

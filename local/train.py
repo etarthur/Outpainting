@@ -2,6 +2,7 @@ import pickle
 import torch
 import torchvision
 from torch import nn, optim
+import matplotlib.pyplot as plt
 
 from local import local_model
 from local import outpainting
@@ -64,4 +65,35 @@ if __name__ == '__main__':
 
     # Save loss history and final generator
     pickle.dump(hist_loss, open('hist_loss.p', 'wb'))
+
+    plt.plot(hist_loss['train_pxl'])
+    plt.xlabel('epochs')
+    plt.ylabel('L1 loss')
+    plt.savefig('train_pxl.png')
+
+    plt.plot(hist_loss['train_adv'])
+    plt.xlabel('epochs')
+    plt.ylabel('MSE loss')
+    plt.savefig('train_adv.png')
+
+    plt.plot(hist_loss['train_D'])
+    plt.xlabel('epochs')
+    plt.ylabel('context discriminator loss')
+    plt.savefig('train_D.png')
+
+    plt.plot(hist_loss['val_pxl'])
+    plt.xlabel('epochs')
+    plt.ylabel('L1 loss')
+    plt.savefig('val_pxl.png')
+
+    plt.plot(hist_loss['val_adv'])
+    plt.xlabel('epochs')
+    plt.ylabel('MSE loss')
+    plt.savefig('val_adv.png')
+
+    plt.plot(hist_loss['val_D'])
+    plt.xlabel('epochs')
+    plt.ylabel('context discriminator loss')
+    plt.savefig('val_D.png')
+
     torch.save(G_net.state_dict(), 'generator_final.pt')
