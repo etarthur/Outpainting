@@ -44,7 +44,7 @@ class Generator(nn.Module):
             layers.append(nn.ReLU())
             return layers
 
-        if not(extra_upsample):
+        if not extra_upsample:
             self.model = nn.Sequential(
                 *downsample(channels, 64, normalize=False),
                 *downsample(64, 64),
@@ -144,10 +144,7 @@ class ContextDiscriminator(nn.Module):
         assert(local_input_shape == global_input_shape)
         self.output_shape = (1,)
 
-        # self.model_ld = LocalDiscriminator(local_input_shape)
         self.model_ld = LocalDiscriminator(local_input_shape)
-
-        # self.model_gd = GlobalDiscriminator(global_input_shape, arc=arc)
         self.model_gd = GlobalDiscriminator()
 
         # TODO: Remove, this stuff gets handled afterwards
@@ -263,7 +260,7 @@ def load_model(model_path):
     new_state_dict = OrderedDict()
     for k, v in state_dict.items():
         if 'module' in k:
-            name = k[7:] # remove 'module'
+            name = k[7:]  # remove 'module'
         else:
             name = k
         new_state_dict[name] = v
@@ -344,7 +341,7 @@ def finish_inpaint(imgs, outputs):
     return result
 
 
-def generate_html(G_net, D_net, mask, device, data_loaders, html_save_path, max_rows=64):
+def generate_html(G_net, D_net, device, data_loaders, html_save_path, max_rows=64):
     '''
     Visualizes one batch from both the training and validation sets.
     Images are stored in the specified HTML file path.
@@ -359,6 +356,8 @@ def generate_html(G_net, D_net, mask, device, data_loaders, html_save_path, max_
     # Evaluate examples
     for phase in ['train', 'val']:
         imgs, masked_imgs, masked_parts = next(iter(data_loaders[phase]))
+        mask_shape = (masked_imgs.shape[0], 1, masked_imgs.shape[2], masked_imgs.shape[3])
+        mask = util.gen_mask(mask_shape).to(device)
         masked_imgs = torch.cat((masked_imgs, mask), dim=1).to(device)
         outputs = G_net(masked_imgs)
         masked_imgs = masked_imgs.cpu()
@@ -445,11 +444,12 @@ def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimiz
                 # Adversarial ground truths
                 valid = Variable(Tensor(imgs.shape[0], *patch).fill_(1.0), requires_grad=False).to(device)
                 fake = Variable(Tensor(imgs.shape[0], *patch).fill_(0.0), requires_grad=False).to(device)
+
                 # Configure input
                 imgs = Variable(imgs.type(Tensor)).to(device)
                 masked_imgs = Variable(masked_imgs.type(Tensor)).to(device)
-                # Concatenate mask as 4th channel
 
+                # Concatenate mask as 4th channel
                 mask_shape = (masked_imgs.shape[0], 1, masked_imgs.shape[2], masked_imgs.shape[3])
                 mask = util.gen_mask(mask_shape).to(device)
                 masked_imgs = torch.cat((masked_imgs, mask), dim=1)
@@ -509,7 +509,7 @@ def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimiz
                     os.makedirs(model_save_path)
                 torch.save(G_net.state_dict(), model_save_path + '/G_' + str(epoch) + '.pt')
                 torch.save(D_net.state_dict(), model_save_path + '/D_' + str(epoch) + '.pt')
-                generate_html(G_net, D_net, mask, device, data_loaders, html_save_path + '/' + str(epoch))
+                generate_html(G_net, D_net, device, data_loaders, html_save_path + '/' + str(epoch))
 
             # Store & print statistics
             cur_loss_pxl = running_loss_pxl / batches_done
