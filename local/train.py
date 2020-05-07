@@ -4,8 +4,8 @@ import torchvision
 from torch import nn, optim
 import matplotlib.pyplot as plt
 
-from local import local_model
-from local import outpainting
+import local_model
+import outpainting
 
 '''
 Edit the paths here and run to train the GAN.
