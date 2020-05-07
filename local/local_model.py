@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from local import layers
+import layers
 
 
 class CompletionNetwork(nn.Module):
