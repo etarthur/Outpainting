@@ -15,8 +15,8 @@ from torch.autograd import Variable
 from torchvision.utils import save_image
 from torch.utils.data import Dataset, DataLoader
 
-from local import util
-from local import layers
+import util
+import layers
 
 input_size = 128
 output_size = 192
