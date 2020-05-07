@@ -344,7 +344,7 @@ def finish_inpaint(imgs, outputs):
     return result
 
 
-def generate_html(G_net, D_net, device, data_loaders, html_save_path, max_rows=64, outpaint=True):
+def generate_html(G_net, D_net, mask, device, data_loaders, html_save_path, max_rows=64):
     '''
     Visualizes one batch from both the training and validation sets.
     Images are stored in the specified HTML file path.
@@ -359,13 +359,13 @@ def generate_html(G_net, D_net, device, data_loaders, html_save_path, max_rows=6
     # Evaluate examples
     for phase in ['train', 'val']:
         imgs, masked_imgs, masked_parts = next(iter(data_loaders[phase]))
-        masked_imgs = masked_imgs.to(device)
+        masked_imgs = torch.cat((masked_imgs, mask), dim=1).to(device)
         outputs = G_net(masked_imgs)
         masked_imgs = masked_imgs.cpu()
-        if not(outpaint):
-            results = finish_inpaint(imgs, outputs.cpu())
-        else:
-            results = outputs.cpu()
+        # if not outpaint:
+        #     results = finish_inpaint(imgs, outputs.cpu())
+        # else:
+        results = outputs.cpu()
         # Store images
         for i in range(min(imgs.shape[0], max_rows)):
             save_image(masked_imgs[i], html_save_path + '/images/' + phase + '_' + str(i) + '_masked.jpg')
@@ -509,7 +509,7 @@ def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimiz
                     os.makedirs(model_save_path)
                 torch.save(G_net.state_dict(), model_save_path + '/G_' + str(epoch) + '.pt')
                 torch.save(D_net.state_dict(), model_save_path + '/D_' + str(epoch) + '.pt')
-                generate_html(G_net, D_net, device, data_loaders, html_save_path + '/' + str(epoch))
+                generate_html(G_net, D_net, mask, device, data_loaders, html_save_path + '/' + str(epoch))
 
             # Store & print statistics
             cur_loss_pxl = running_loss_pxl / batches_done
