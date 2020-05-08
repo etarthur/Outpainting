@@ -44,7 +44,7 @@ class Generator(nn.Module):
             layers.append(nn.ReLU())
             return layers
 
-        if not extra_upsample:
+        if not(extra_upsample):
             self.model = nn.Sequential(
                 *downsample(channels, 64, normalize=False),
                 *downsample(64, 64),
@@ -144,7 +144,10 @@ class ContextDiscriminator(nn.Module):
         assert(local_input_shape == global_input_shape)
         self.output_shape = (1,)
 
+        # self.model_ld = LocalDiscriminator(local_input_shape)
         self.model_ld = LocalDiscriminator(local_input_shape)
+
+        # self.model_gd = GlobalDiscriminator(global_input_shape, arc=arc)
         self.model_gd = GlobalDiscriminator()
 
         # TODO: Remove, this stuff gets handled afterwards
@@ -190,7 +193,7 @@ def blend_result(output_img, input_img, blend_width=8):
         in_width, in_height = input_img.shape[1], input_img.shape[0]
         out_width, out_height = int(in_width / in_factor), int(in_height / in_factor)
         output_img = skimage.transform.resize(output_img, (out_height, out_width), anti_aliasing=True)
-    
+
     # Construct source mask
     src_mask = np.zeros((output_size, output_size))
     src_mask[expand_size+1:-expand_size-1, expand_size+1:-expand_size-1] = 1 # 1 extra pixel for safety
@@ -198,13 +201,13 @@ def blend_result(output_img, input_img, blend_width=8):
     src_mask = np.minimum(src_mask, 1)
     src_mask = skimage.transform.resize(src_mask, (out_height, out_width), anti_aliasing=True)
     src_mask = np.tile(src_mask[:, :, np.newaxis], (1, 1, 3))
-    
+
     # Pad input
     input_pad = np.zeros((out_height, out_width, 3))
     x1 = (out_width - in_width) // 2
     y1 = (out_height - in_height) // 2
     input_pad[y1:y1+in_height, x1:x1+in_width, :] = input_img
-    
+
     # Merge
     blended = input_pad * src_mask + output_img * (1 - src_mask)
 
@@ -260,7 +263,7 @@ def load_model(model_path):
     new_state_dict = OrderedDict()
     for k, v in state_dict.items():
         if 'module' in k:
-            name = k[7:]  # remove 'module'
+            name = k[7:] # remove 'module'
         else:
             name = k
         new_state_dict[name] = v
@@ -281,7 +284,7 @@ def weights_init_normal(m):
 
 
 class CEImageDataset(Dataset):
-    
+
     def __init__(self, root, transform, output_size=192, input_size=128, outpaint=True):
         self.transform = transform
         self.output_size = output_size
@@ -293,7 +296,7 @@ class CEImageDataset(Dataset):
         """Mask center part of image"""
         # Get upper-left pixel coordinate
         i = (self.output_size - self.input_size) // 2
-        
+
         if not self.outpaint:
             masked_part = img[:, i:i + self.input_size, i:i + self.input_size]
             masked_img = img.clone()
@@ -316,7 +319,7 @@ class CEImageDataset(Dataset):
         except:
             # Likely corrupt image file, so generate black instead
             img = torch.zeros((3, self.output_size, self.output_size))
-            
+
         masked_img, masked_part = self.apply_center_mask(img)
 
         return img, masked_img, masked_part
@@ -341,7 +344,7 @@ def finish_inpaint(imgs, outputs):
     return result
 
 
-def generate_html(G_net, D_net, device, data_loaders, html_save_path, max_rows=64):
+def generate_html(G_net, D_net, mask, device, data_loaders, html_save_path, max_rows=64):
     '''
     Visualizes one batch from both the training and validation sets.
     Images are stored in the specified HTML file path.
@@ -356,8 +359,11 @@ def generate_html(G_net, D_net, device, data_loaders, html_save_path, max_rows=6
     # Evaluate examples
     for phase in ['train', 'val']:
         imgs, masked_imgs, masked_parts = next(iter(data_loaders[phase]))
+
+        masked_imgs = masked_imgs.to(device)
         mask_shape = (masked_imgs.shape[0], 1, masked_imgs.shape[2], masked_imgs.shape[3])
         mask = util.gen_mask(mask_shape).to(device)
+
         masked_imgs = torch.cat((masked_imgs, mask), dim=1).to(device)
         outputs = G_net(masked_imgs)
         masked_imgs = masked_imgs.cpu()
@@ -367,7 +373,7 @@ def generate_html(G_net, D_net, device, data_loaders, html_save_path, max_rows=6
         results = outputs.cpu()
         # Store images
         for i in range(min(imgs.shape[0], max_rows)):
-            save_image(masked_imgs[i], html_save_path + '/images/' + phase + '_' + str(i) + '_masked.jpg')
+            save_image(masked_imgs[i][:3], html_save_path + '/images/' + phase + '_' + str(i) + '_masked.jpg')
             save_image(results[i], html_save_path + '/images/' + phase + '_' + str(i) + '_result.jpg')
             save_image(imgs[i], html_save_path + '/images/' + phase + '_' + str(i) + '_truth.jpg')
 
@@ -422,16 +428,16 @@ def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimiz
     """
     Tensor = torch.cuda.FloatTensor
     hist_loss = defaultdict(list)
-    
+
     for epoch in range(start_epoch, n_epochs):
-        
+
         for phase in ['train', 'val']:
             batches_done = 0
-            
+
             running_loss_pxl = 0.0
             running_loss_adv = 0.0
             running_loss_D = 0.0
-        
+
             for idx, (imgs, masked_imgs, masked_parts) in enumerate(data_loaders[phase]):
                 if phase == 'train':
                     G_net.train()
@@ -444,12 +450,11 @@ def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimiz
                 # Adversarial ground truths
                 valid = Variable(Tensor(imgs.shape[0], *patch).fill_(1.0), requires_grad=False).to(device)
                 fake = Variable(Tensor(imgs.shape[0], *patch).fill_(0.0), requires_grad=False).to(device)
-
                 # Configure input
                 imgs = Variable(imgs.type(Tensor)).to(device)
                 masked_imgs = Variable(masked_imgs.type(Tensor)).to(device)
-
                 # Concatenate mask as 4th channel
+
                 mask_shape = (masked_imgs.shape[0], 1, masked_imgs.shape[2], masked_imgs.shape[3])
                 mask = util.gen_mask(mask_shape).to(device)
                 masked_imgs = torch.cat((masked_imgs, mask), dim=1)
@@ -509,7 +514,7 @@ def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimiz
                     os.makedirs(model_save_path)
                 torch.save(G_net.state_dict(), model_save_path + '/G_' + str(epoch) + '.pt')
                 torch.save(D_net.state_dict(), model_save_path + '/D_' + str(epoch) + '.pt')
-                generate_html(G_net, D_net, device, data_loaders, html_save_path + '/' + str(epoch))
+                generate_html(G_net, D_net, mask, device, data_loaders, html_save_path + '/' + str(epoch))
 
             # Store & print statistics
             cur_loss_pxl = running_loss_pxl / batches_done
@@ -525,5 +530,3 @@ def train(G_net, D_net, device, criterion_pxl, criterion_D, optimizer_G, optimiz
 
     print('Done!')
     return hist_loss
-
-
