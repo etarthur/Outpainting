@@ -42,6 +42,8 @@ class CompletionNetwork(nn.Module):
         self.act10 = nn.ReLU()
         self.conv11 = nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1)
         self.act11 = nn.ReLU()
+        self.conv12 = nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1)
+
         self.act12 = nn.ReLU()
         # Here lies the latent space, with m feature maps of size n x n, total parameters m * n ^ 4
         self.deconv13 = nn.ConvTranspose2d(256, 128, kernel_size=4, stride=2, padding=1)
@@ -61,20 +63,31 @@ class CompletionNetwork(nn.Module):
         residual = IdentityExpansion(60,32,1).forward(residual)
 
         res1 = x
+        res1 = IdentityExpansion(124,0,2).forward(res1)
         x = self.act1(self.conv1(x))
         x = self.act2(self.conv2(x))
+        x+=res1
 
+        res2 = x
+        res2 = IdentityExpansion(128,0,2).forward(res2)
         x = self.act3(self.conv3(x))
         x = self.act4(self.conv4(x))
+        x+=res2
 
+        res3 = x
         x = self.act5(self.conv5(x))
         x = self.act6(self.conv6(x))
+        x+=res3
 
+        res4 = x
         x = self.act7(self.conv7(x))
         x = self.act8(self.conv8(x))
+        x+=res4
 
+        res5 = x
         x = self.act9(self.conv9(x))
         x = self.act10(self.conv10(x))
+        x+=res5
 
         x = self.act11(self.conv11(x))
         x = self.act12(self.conv12(x))
