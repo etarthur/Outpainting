@@ -69,7 +69,7 @@ class Generator(nn.Module):
     def forward(self, x):
         z = self.down1[0](x)
         z = self.down1[1](z)
-
+        residual = z
         for i in range(3):
             z = self.down2[i](z)
         for i in range(3):
@@ -80,7 +80,7 @@ class Generator(nn.Module):
             z = self.down5[i](z)
         for i in range(3):
             z = self.down6[i](z)
-
+        z += residual
         z = self.down_middle(z)
 
         for i in range(3):
