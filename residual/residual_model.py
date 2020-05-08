@@ -59,10 +59,8 @@ class CompletionNetwork(nn.Module):
         self.act17 = nn.Sigmoid()
 
     def forward(self, x):
-        residual = x
-        residual = IdentityExpansion(60,32,1).forward(residual)
-
         x = self.act1(self.conv1(x))
+        residual = x
         x = self.act2(self.conv2(x))
 
         x = self.act3(self.conv3(x))
@@ -83,8 +81,8 @@ class CompletionNetwork(nn.Module):
         x = self.act13(self.deconv13(x))
         x = self.act14(self.conv14(x))
         x = self.act15(self.deconv15(x))
-        x = self.act16(self.conv16(x))
         x += residual
+        x = self.act16(self.conv16(x))
         x = self.act17(self.conv17(x))
         return x
 
