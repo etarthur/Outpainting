@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
     # Define model & device
     device = torch.device('cuda:0')
-    G_net = residual_model.CompletionNetwork()
+    G_net = outpainting.Generator()
     CD_net = outpainting.ContextDiscriminator((3, outpainting.output_size, outpainting.output_size), (3, outpainting.output_size, outpainting.output_size), arc='places2')
     G_net.apply(outpainting.weights_init_normal)
     CD_net.apply(outpainting.weights_init_normal)
