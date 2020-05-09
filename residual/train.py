@@ -43,16 +43,16 @@ if __name__ == '__main__':
     device = torch.device('cuda:0')
     G_net = multiple_res_model.CompletionNetwork()
     CD_net = outpainting.ContextDiscriminator((3, outpainting.output_size, outpainting.output_size), (3, outpainting.output_size, outpainting.output_size), arc='places2')
-    G_net.apply(outpainting.weights_init_normal)
-    CD_net.apply(outpainting.weights_init_normal)
+    G_net.load_state_dict(torch.load("outpaint_models/G_9.pt"))
+    CD_net.load_state_dict(torch.load("outpaint_models/D_9.pt"))
     G_net.to(device)
     CD_net.to(device)
     print('device:', device)
 
     # Start training
     data_loaders = {'train': train_loader, 'val': val_loader, 'test': test_loader}  # NOTE: test is evidently not used by the train method
-    n_epochs = 200
-    adv_weight = [0.001, 0.005, 0.015, 0.040]  # corresponds to epochs 1-10, 10-30, 30-60, 60-onwards
+    n_epochs = 50
+    adv_weight = [ 0.005, 0.015, 0.040]  # corresponds to epochs 1-10, 10-30, 30-60, 60-onwards
     hist_loss = outpainting.train(G_net, CD_net, device,
                                   criterion_pxl=nn.L1Loss().to(device),
                                   criterion_D=nn.MSELoss().to(device),
