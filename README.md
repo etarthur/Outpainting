@@ -9,6 +9,6 @@ We generate a 192x192 image from the given ground truth of the same size, masked
 TODO
 
 ## Usage
-Our models are separated in their respective folders, and all use a [train](http://data.csail.mit.edu/places/places365/train_256_places365standard.tar) and [val](http://data.csail.mit.edu/places/places365/val_256.tar) folder in the repository root. The dataset which we used is the MIT Places365-Standard dataset.
+Our models are separated in their respective folders, but each use a [train](http://data.csail.mit.edu/places/places365/train_256_places365standard.tar) and [val](http://data.csail.mit.edu/places/places365/val_256.tar) folder in the repository root trainings, which contain the MIT Places365-Standard dataset.
 * Run `train.py` of each model to train the network
 * Evaluate custom input image by running `forward.py input.jpg output.jpg` 

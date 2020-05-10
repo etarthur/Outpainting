@@ -36,12 +36,12 @@
 
 % The \icmltitle you define below is probably too long as a header.
 % Therefore, a short form for the running title is supplied here:
-\icmltitlerunning{Title of My Paper}
+\icmltitlerunning{Enhanced Residual Context-based Networks for Image Outpainting}
 
 \begin{document} 
 
 \twocolumn[
-\icmltitle{Title of My Paper}
+\icmltitle{Enhanced Residual Context-based Networks for Image Outpainting}
 
 % It is OKAY to include author information, even for blind
 % submissions: the style file will automatically remove it for you
@@ -59,13 +59,14 @@
 \icmlsetsymbol{equal}{*}
 
 \begin{icmlauthorlist}
-\icmlauthor{Aeiau Zzzz}{wpi}
-\icmlauthor{Bauiu C.~Yyyy}{wpi}
+\icmlauthor{Przemek Gardias}{wpi}
+\icmlauthor{Eric Arthur}{wpi}
+\icmlauthor{Huaming Sun}{wpi}
 \end{icmlauthorlist}
 
 \icmlaffiliation{wpi}{Worcester Polytechnic Institute}
 
-\icmlcorrespondingauthor{Cieua Vvvvv}{c.vvvvv@wpi.edu}
+\icmlcorrespondingauthor{Przemek Gardias}{pmgardias@wpi.edu}
 
 % You may provide any keywords that you 
 % find helpful for describing your paper; these are used to populate 
@@ -110,6 +111,132 @@ of prior work to further motivate your research.
 \section{Proposed Method}
 \label{sec:proposed_method}
 Describe the computational approach -- based obviously on neural networks -- that you took to tackle the problem.
+
+\begin{table}[h] 
+  \centering  
+    \begin{tabular}{c|c|c}  
+    \hline
+    \textbf{layer} & \textbf{output size} & \textbf{parameters}\\ 
+    \hline
+      Conv & 16$\times$192$\times$192 & 5$\times$5, stride=1 \\
+    \hline
+      ResBlock & 128$\times$96$\times$96 & 3$\times$3, stride=2 \\
+    \hline
+      ResBlock & 256$\times$48$\times$48 & 3$\times$3, stride=2 \\
+    \hline
+      ResBlock & 256$\times$48$\times$48 & 3$\times$3, stride=1 \\
+    \hline
+      ResBlock & 256$\times$48$\times$48 & 3$\times$3, stride=1 \\
+    \hline
+      ResBlock & 256$\times$48$\times$48 & 3$\times$3, stride=1 \\
+    \hline
+      Conv & 256$\times$48$\times$48 & 3$\times$3, stride=1 \\
+    \hline
+      ReLU & 256$\times$48$\times$48 & None \\
+    \hline
+      Conv & 256$\times$48$\times$48 & 3$\times$3, stride=1 \\
+    \hline
+      ReLU & 256$\times$48$\times$48 & None \\
+    \hline
+      Conv & 256$\times$48$\times$48 & 3$\times$3, stride=1 \\
+    \hline
+      ReLU & 256$\times$48$\times$48 & None \\
+    \hline
+      Trans-Conv & 128$\times$96$\times$96 & 4$\times$4, stride=1 \\
+    \hline
+      ReLU & 128$\times$96$\times$96 & None \\
+    \hline
+      Conv & 128$\times$96$\times$96 & 3$\times$3, stride=1 \\
+    \hline
+      ReLU & 128$\times$96$\times$96 & None \\
+    \hline
+      Trans-Conv & 64$\times$192$\times$192 & None \\
+    \hline
+      ReLU & 64$\times$192$\times$192 & None \\
+    \hline
+      Conv & 32$\times$192$\times$192 & 3$\times$3, stride=1 \\
+    \hline
+      ReLU & 32$\times$192$\times$192 & None \\
+    \hline
+      Conv & 3$\times$192$\times$192 & 3$\times$3, stride=2 \\
+    \hline
+      Sigmoid & 3$\times$192$\times$192 & None \\
+    \hline
+    \end{tabular}
+  
+  \caption{Architecture of generator, including parameters. Trans-Conv is transposed convolution.} 
+  \label{tab:1}
+  \label{table1} 
+\end{table}
+
+\begin{table}[h] 
+  \centering  
+    \begin{tabular}{c|c}  
+    \hline
+    \textbf{layer} & \textbf{parameters}\\ 
+    \hline
+      Conv & 3$\times$3, stride=\(s_{in}\) \\
+    \hline
+      ReLU & None \\
+    \hline
+      Conv & 3$\times$3, stride=\(s_{in}\) \\
+    \hline
+      ReLU & None \\
+    \hline
+      Add & None \\
+    \hline
+    \end{tabular}
+  
+  \caption{Architecture of residual block used in generator, including parameters. The residual block applies input strides \(s_{in}\) as convolution layer parameters. Add is an element-wise addition of \(x_{in}\) and output tensor of previous layer.} 
+  \label{tab:2}
+  \label{table2} 
+\end{table}
+
+\begin{table}[h] 
+  \centering  
+    \begin{tabular}{c|c}  
+    \hline
+    \textbf{layer} & \textbf{parameters}\\ 
+    \hline
+      Conv & 3$\times$3, stride=2 \\
+    \hline
+      InstanceNorm & None \\
+    \hline
+      LeakyReLU & negative slope=0.2, inplace=True \\
+    \hline
+      Conv & 3$\times$3, stride=2 \\
+    \hline
+      InstanceNorm & None \\
+    \hline
+      LeakyReLU & negative slope=0.2, inplace=True \\
+    \hline
+      Conv & 3$\times$3, stride=2 \\
+    \hline
+      InstanceNorm & None \\
+    \hline
+      LeakyReLU & negative slope=0.2, inplace=True \\
+    \hline
+      Conv & 3$\times$3, stride=2 \\
+    \hline
+      InstanceNorm & None \\
+    \hline
+      LeakyReLU & negative slope=0.2, inplace=True \\
+    \hline
+      Conv & 3$\times$3, stride=1 \\
+    \hline
+      InstanceNorm & None \\
+    \hline
+      LeakyReLU & negative slope=0.2, inplace=True \\
+    \hline
+      Conv & 3$\times$3, stride=1 \\
+    \hline
+    
+    \end{tabular}
+  
+  \caption{Architecture of global and local discriminators.} 
+  \label{tab:3}
+  \label{table3} 
+\end{table}
 
 \section{Experiment}
 Describe the computational experiments you conducted to validate the approach you took.
