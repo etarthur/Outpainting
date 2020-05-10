@@ -1,7 +1,209 @@
-@TechReport{mitchell80,
-  author = 	 "T. M. Mitchell",
-  title = 	 "The Need for Biases in Learning Generalizations",
-  institution =  "Computer Science Department, Rutgers University",
-  year = 	 "1980",
-  address =	 "New Brunswick, MA",
+
+@article{patel_improving_2019,
+	title = {Improving {Human} {Performance} {Using} {Mixed} {Granularity} of {Control} in {Multi}-{Human} {Multi}-{Robot} {Interaction}},
+	url = {http://arxiv.org/abs/1909.07487},
+	abstract = {Due to the potentially large number of units involved, the interaction with a multi-robot system is likely to exceed the limits of the span of apprehension of any individual human operator. In previous work, we studied how this issue can be tackled by interacting with the robots in two modalities — environment-oriented and robot-oriented. In this paper, we study how this concept can be applied to the case in which multiple human operators perform supervisory control on a multirobot system. While the presence of extra operators suggests that more complex tasks could be accomplished, little research exists on how this could be achieved efﬁciently. In particular, one challenge arises — the out-of-the-loop performance problem caused by a lack of engagement in the task, awareness of its state, and trust in the system and in the other operators. Through a user study involving 28 human operators and 8 real robots, we study how the concept of mixed granularity in multi-human multi-robot interaction affects user engagement, awareness, and trust while balancing the workload between multiple operators.},
+	language = {en},
+	urldate = {2019-09-26},
+	journal = {arXiv:1909.07487 [cs]},
+	author = {Patel, Jayam and Pinciroli, Carlo},
+	month = sep,
+	year = {2019},
+	note = {arXiv: 1909.07487},
+	keywords = {Computer Science - Multiagent Systems, Computer Science - Robotics}
+}
+
+@techreport{elliott_gesture-based_2016,
+	address = {Fort Belvoir, VA},
+	title = {Gesture-{Based} {Controls} for {Robots}: {Overview} and {Implications} for {Use} by {Soldiers}:},
+	shorttitle = {Gesture-{Based} {Controls} for {Robots}},
+	url = {http://www.dtic.mil/docs/citations/AD1011904},
+	language = {en},
+	urldate = {2019-09-26},
+	institution = {Defense Technical Information Center},
+	author = {Elliott, Linda R. and Hill, Susan G. and Barnes, Michael},
+	month = jul,
+	year = {2016},
+	doi = {10.21236/AD1011904}
+}
+
+@article{hui_image_2020,
+	title = {Image {Fine}-grained {Inpainting}},
+	url = {http://arxiv.org/abs/2002.02609},
+	abstract = {Image inpainting techniques have shown promising improvement with the assistance of generative adversarial networks (GANs) recently. However, most of them often suffered from completed results with unreasonable structure or blurriness. To mitigate this problem, in this paper, we present a one-stage model that utilizes dense combinations of dilated convolutions to obtain larger and more effective receptive fields. Benefited from the property of this network, we can more easily recover large regions in an incomplete image. To better train this efficient generator, except for frequently-used VGG feature matching loss, we design a novel self-guided regression loss for concentrating on uncertain areas and enhancing the semantic details. Besides, we devise a geometrical alignment constraint item to compensate for the pixel-based distance between prediction features and ground-truth ones. We also employ a discriminator with local and global branches to ensure local-global contents consistency. To further improve the quality of generated images, discriminator feature matching on the local branch is introduced, which dynamically minimizes the similarity of intermediate features between synthetic and ground-truth patches. Extensive experiments on several public datasets demonstrate that our approach outperforms current state-of-the-art methods. Code is available at{\textasciitilde}{\textbackslash}url\{https://github.com/Zheng222/DMFN\}.},
+	urldate = {2020-05-08},
+	journal = {arXiv:2002.02609 [cs]},
+	author = {Hui, Zheng and Li, Jie and Wang, Xiumei and Gao, Xinbo},
+	month = feb,
+	year = {2020},
+	note = {arXiv: 2002.02609},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition, Computer Science - Multimedia}
+}
+
+@article{van_hoorick_image_2020,
+	title = {Image {Outpainting} and {Harmonization} using {Generative} {Adversarial} {Networks}},
+	url = {http://arxiv.org/abs/1912.10960},
+	abstract = {Although the inherently ambiguous task of predicting what resides beyond all four edges of an image has rarely been explored before, we demonstrate that GANs hold powerful potential in producing reasonable extrapolations. Two outpainting methods are proposed that aim to instigate this line of research: the first approach uses a context encoder inspired by common inpainting architectures and paradigms, while the second approach adds an extra post-processing step using a single-image generative model. This way, the hallucinated details are integrated with the style of the original image, in an attempt to further boost the quality of the result and possibly allow for arbitrary output resolutions to be supported.},
+	urldate = {2020-05-08},
+	journal = {arXiv:1912.10960 [cs]},
+	author = {Van Hoorick, Basile},
+	month = feb,
+	year = {2020},
+	note = {arXiv: 1912.10960},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition}
+}
+
+@article{pathak_context_2016,
+	title = {Context {Encoders}: {Feature} {Learning} by {Inpainting}},
+	shorttitle = {Context {Encoders}},
+	url = {http://arxiv.org/abs/1604.07379},
+	abstract = {We present an unsupervised visual feature learning algorithm driven by context-based pixel prediction. By analogy with auto-encoders, we propose Context Encoders -- a convolutional neural network trained to generate the contents of an arbitrary image region conditioned on its surroundings. In order to succeed at this task, context encoders need to both understand the content of the entire image, as well as produce a plausible hypothesis for the missing part(s). When training context encoders, we have experimented with both a standard pixel-wise reconstruction loss, as well as a reconstruction plus an adversarial loss. The latter produces much sharper results because it can better handle multiple modes in the output. We found that a context encoder learns a representation that captures not just appearance but also the semantics of visual structures. We quantitatively demonstrate the effectiveness of our learned features for CNN pre-training on classification, detection, and segmentation tasks. Furthermore, context encoders can be used for semantic inpainting tasks, either stand-alone or as initialization for non-parametric methods.},
+	urldate = {2020-05-08},
+	journal = {arXiv:1604.07379 [cs]},
+	author = {Pathak, Deepak and Krahenbuhl, Philipp and Donahue, Jeff and Darrell, Trevor and Efros, Alexei A.},
+	month = nov,
+	year = {2016},
+	note = {arXiv: 1604.07379},
+	keywords = {Computer Science - Artificial Intelligence, Computer Science - Computer Vision and Pattern Recognition, Computer Science - Graphics, Computer Science - Machine Learning}
+}
+
+@article{lim_enhanced_2017,
+	title = {Enhanced {Deep} {Residual} {Networks} for {Single} {Image} {Super}-{Resolution}},
+	url = {http://arxiv.org/abs/1707.02921},
+	abstract = {Recent research on super-resolution has progressed with the development of deep convolutional neural networks (DCNN). In particular, residual learning techniques exhibit improved performance. In this paper, we develop an enhanced deep super-resolution network (EDSR) with performance exceeding those of current state-of-the-art SR methods. The significant performance improvement of our model is due to optimization by removing unnecessary modules in conventional residual networks. The performance is further improved by expanding the model size while we stabilize the training procedure. We also propose a new multi-scale deep super-resolution system (MDSR) and training method, which can reconstruct high-resolution images of different upscaling factors in a single model. The proposed methods show superior performance over the state-of-the-art methods on benchmark datasets and prove its excellence by winning the NTIRE2017 Super-Resolution Challenge.},
+	urldate = {2020-05-08},
+	journal = {arXiv:1707.02921 [cs]},
+	author = {Lim, Bee and Son, Sanghyun and Kim, Heewon and Nah, Seungjun and Lee, Kyoung Mu},
+	month = jul,
+	year = {2017},
+	note = {arXiv: 1707.02921},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition}
+}
+
+@article{radford_unsupervised_2016,
+	title = {Unsupervised {Representation} {Learning} with {Deep} {Convolutional} {Generative} {Adversarial} {Networks}},
+	url = {http://arxiv.org/abs/1511.06434},
+	abstract = {In recent years, supervised learning with convolutional networks (CNNs) has seen huge adoption in computer vision applications. Comparatively, unsupervised learning with CNNs has received less attention. In this work we hope to help bridge the gap between the success of CNNs for supervised learning and unsupervised learning. We introduce a class of CNNs called deep convolutional generative adversarial networks (DCGANs), that have certain architectural constraints, and demonstrate that they are a strong candidate for unsupervised learning. Training on various image datasets, we show convincing evidence that our deep convolutional adversarial pair learns a hierarchy of representations from object parts to scenes in both the generator and discriminator. Additionally, we use the learned features for novel tasks - demonstrating their applicability as general image representations.},
+	urldate = {2020-05-08},
+	journal = {arXiv:1511.06434 [cs]},
+	author = {Radford, Alec and Metz, Luke and Chintala, Soumith},
+	month = jan,
+	year = {2016},
+	note = {arXiv: 1511.06434},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition, Computer Science - Machine Learning}
+}
+
+@article{zhou_places_2017,
+	title = {Places: {A} 10 million {Image} {Database} for {Scene} {Recognition}},
+	journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+	author = {Zhou, Bolei and Lapedriza, Agata and Khosla, Aditya and Oliva, Aude and Torralba, Antonio},
+	year = {2017},
+	note = {Publisher: IEEE}
+}
+
+@article{iizuka_globally_2017,
+	title = {Globally and {Locally} {Consistent} {Image} {Completion}},
+	volume = {36},
+	number = {4},
+	journal = {ACM Transactions on Graphics (Proc. of SIGGRAPH 2017)},
+	author = {Iizuka, Satoshi and Simo-Serra, Edgar and Ishikawa, Hiroshi},
+	year = {2017},
+	pages = {107:1--107:14}
+}
+
+@article{yang_very_2019,
+	title = {Very {Long} {Natural} {Scenery} {Image} {Prediction} by {Outpainting}},
+	url = {http://arxiv.org/abs/1912.12688},
+	abstract = {Comparing to image inpainting, image outpainting receives less attention due to two challenges in it. The first challenge is how to keep the spatial and content consistency between generated images and original input. The second challenge is how to maintain high quality in generated results, especially for multi-step generations in which generated regions are spatially far away from the initial input. To solve the two problems, we devise some innovative modules, named Skip Horizontal Connection and Recurrent Content Transfer, and integrate them into our designed encoder-decoder structure. By this design, our network can generate highly realistic outpainting prediction effectively and efficiently. Other than that, our method can generate new images with very long sizes while keeping the same style and semantic content as the given input. To test the effectiveness of the proposed architecture, we collect a new scenery dataset with diverse, complicated natural scenes. The experimental results on this dataset have demonstrated the efficacy of our proposed network. The code and dataset are available from https://github.com/z-x-yang/NS-Outpainting.},
+	urldate = {2020-05-10},
+	journal = {arXiv:1912.12688 [cs]},
+	author = {Yang, Zongxin and Dong, Jian and Liu, Ping and Yang, Yi and Yan, Shuicheng},
+	month = dec,
+	year = {2019},
+	note = {arXiv: 1912.12688},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition}
+}
+
+@article{sabini_painting_2018,
+	title = {Painting {Outside} the {Box}: {Image} {Outpainting} with {GANs}},
+	shorttitle = {Painting {Outside} the {Box}},
+	url = {http://arxiv.org/abs/1808.08483},
+	abstract = {The challenging task of image outpainting (extrapolation) has received comparatively little attention in relation to its cousin, image inpainting (completion). Accordingly, we present a deep learning approach based on Iizuka et al. for adversarially training a network to hallucinate past image boundaries. We use a three-phase training schedule to stably train a DCGAN architecture on a subset of the Places365 dataset. In line with Iizuka et al., we also use local discriminators to enhance the quality of our output. Once trained, our model is able to outpaint \$128 {\textbackslash}times 128\$ color images relatively realistically, thus allowing for recursive outpainting. Our results show that deep learning approaches to image outpainting are both feasible and promising.},
+	urldate = {2020-05-10},
+	journal = {arXiv:1808.08483 [cs]},
+	author = {Sabini, Mark and Rusak, Gili},
+	month = aug,
+	year = {2018},
+	note = {arXiv: 1808.08483},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition}
+}
+
+@article{nah_deep_2018,
+	title = {Deep {Multi}-scale {Convolutional} {Neural} {Network} for {Dynamic} {Scene} {Deblurring}},
+	url = {http://arxiv.org/abs/1612.02177},
+	abstract = {Non-uniform blind deblurring for general dynamic scenes is a challenging computer vision problem as blurs arise not only from multiple object motions but also from camera shake, scene depth variation. To remove these complicated motion blurs, conventional energy optimization based methods rely on simple assumptions such that blur kernel is partially uniform or locally linear. Moreover, recent machine learning based methods also depend on synthetic blur datasets generated under these assumptions. This makes conventional deblurring methods fail to remove blurs where blur kernel is difficult to approximate or parameterize (e.g. object motion boundaries). In this work, we propose a multi-scale convolutional neural network that restores sharp images in an end-to-end manner where blur is caused by various sources. Together, we present multi-scale loss function that mimics conventional coarse-to-fine approaches. Furthermore, we propose a new large-scale dataset that provides pairs of realistic blurry image and the corresponding ground truth sharp image that are obtained by a high-speed camera. With the proposed model trained on this dataset, we demonstrate empirically that our method achieves the state-of-the-art performance in dynamic scene deblurring not only qualitatively, but also quantitatively.},
+	urldate = {2020-05-10},
+	journal = {arXiv:1612.02177 [cs]},
+	author = {Nah, Seungjun and Kim, Tae Hyun and Lee, Kyoung Mu},
+	month = may,
+	year = {2018},
+	note = {arXiv: 1612.02177},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition}
+}
+
+@article{liu_image_2018,
+	title = {Image {Inpainting} for {Irregular} {Holes} {Using} {Partial} {Convolutions}},
+	url = {http://arxiv.org/abs/1804.07723},
+	abstract = {Existing deep learning based image inpainting methods use a standard convolutional network over the corrupted image, using convolutional filter responses conditioned on both valid pixels as well as the substitute values in the masked holes (typically the mean value). This often leads to artifacts such as color discrepancy and blurriness. Post-processing is usually used to reduce such artifacts, but are expensive and may fail. We propose the use of partial convolutions, where the convolution is masked and renormalized to be conditioned on only valid pixels. We further include a mechanism to automatically generate an updated mask for the next layer as part of the forward pass. Our model outperforms other methods for irregular masks. We show qualitative and quantitative comparisons with other methods to validate our approach.},
+	urldate = {2020-05-10},
+	journal = {arXiv:1804.07723 [cs]},
+	author = {Liu, Guilin and Reda, Fitsum A. and Shih, Kevin J. and Wang, Ting-Chun and Tao, Andrew and Catanzaro, Bryan},
+	month = dec,
+	year = {2018},
+	note = {arXiv: 1804.07723},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition}
+}
+
+@article{sabini_painting_2018-1,
+	title = {Painting {Outside} the {Box}: {Image} {Outpainting} with {GANs}},
+	shorttitle = {Painting {Outside} the {Box}},
+	url = {http://arxiv.org/abs/1808.08483},
+	abstract = {The challenging task of image outpainting (extrapolation) has received comparatively little attention in relation to its cousin, image inpainting (completion). Accordingly, we present a deep learning approach based on Iizuka et al. for adversarially training a network to hallucinate past image boundaries. We use a three-phase training schedule to stably train a DCGAN architecture on a subset of the Places365 dataset. In line with Iizuka et al., we also use local discriminators to enhance the quality of our output. Once trained, our model is able to outpaint \$128 {\textbackslash}times 128\$ color images relatively realistically, thus allowing for recursive outpainting. Our results show that deep learning approaches to image outpainting are both feasible and promising.},
+	urldate = {2020-05-10},
+	journal = {arXiv:1808.08483 [cs]},
+	author = {Sabini, Mark and Rusak, Gili},
+	month = aug,
+	year = {2018},
+	note = {arXiv: 1808.08483},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition}
+}
+
+@inproceedings{wang_wide-context_2019,
+	address = {Long Beach, CA, USA},
+	title = {Wide-{Context} {Semantic} {Image} {Extrapolation}},
+	isbn = {978-1-72813-293-8},
+	url = {https://ieeexplore.ieee.org/document/8953261/},
+	doi = {10.1109/CVPR.2019.00149},
+	abstract = {This paper studies the fundamental problem of extrapolating visual context using deep generative models, i.e., extending image borders with plausible structure and details. This seemingly easy task actually faces many crucial technical challenges and has its unique properties. The two major issues are size expansion and one-side constraints. We propose a semantic regeneration network with several special contributions and use multiple spatial related losses to address these issues. Our results contain consistent structures and high-quality textures. Extensive experiments are conducted on various possible alternatives and related methods. We also explore the potential of our method for various interesting applications that can beneﬁt research in a variety of ﬁelds.},
+	language = {en},
+	urldate = {2020-05-10},
+	booktitle = {2019 {IEEE}/{CVF} {Conference} on {Computer} {Vision} and {Pattern} {Recognition} ({CVPR})},
+	publisher = {IEEE},
+	author = {Wang, Yi and Tao, Xin and Shen, Xiaoyong and Jia, Jiaya},
+	month = jun,
+	year = {2019},
+	pages = {1399--1408}
+}
+
+@article{yang_very_2019-1,
+	title = {Very {Long} {Natural} {Scenery} {Image} {Prediction} by {Outpainting}},
+	url = {http://arxiv.org/abs/1912.12688},
+	abstract = {Comparing to image inpainting, image outpainting receives less attention due to two challenges in it. The first challenge is how to keep the spatial and content consistency between generated images and original input. The second challenge is how to maintain high quality in generated results, especially for multi-step generations in which generated regions are spatially far away from the initial input. To solve the two problems, we devise some innovative modules, named Skip Horizontal Connection and Recurrent Content Transfer, and integrate them into our designed encoder-decoder structure. By this design, our network can generate highly realistic outpainting prediction effectively and efficiently. Other than that, our method can generate new images with very long sizes while keeping the same style and semantic content as the given input. To test the effectiveness of the proposed architecture, we collect a new scenery dataset with diverse, complicated natural scenes. The experimental results on this dataset have demonstrated the efficacy of our proposed network. The code and dataset are available from https://github.com/z-x-yang/NS-Outpainting.},
+	urldate = {2020-05-10},
+	journal = {arXiv:1912.12688 [cs]},
+	author = {Yang, Zongxin and Dong, Jian and Liu, Ping and Yang, Yi and Yan, Shuicheng},
+	month = dec,
+	year = {2019},
+	note = {arXiv: 1912.12688},
+	keywords = {Computer Science - Computer Vision and Pattern Recognition}
 }
