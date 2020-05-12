@@ -13,6 +13,7 @@
 \usepackage{graphicx} % more modern
 %\usepackage{epsfig} % less modern
 \usepackage{subfigure} 
+\usepackage{amsmath}
 
 % For citations
 \usepackage{natbib}
@@ -66,12 +67,12 @@
 
 \icmlaffiliation{wpi}{Worcester Polytechnic Institute}
 
-\icmlcorrespondingauthor{Przemek Gardias}{pmgardias@wpi.edu}
+\icmlcorrespondingauthor{}{\{pmgardias, etarthur, hsun2\}@wpi.edu}
 
 % You may provide any keywords that you 
 % find helpful for describing your paper; these are used to populate 
 % the "keywords" metadata in the PDF but will not be shown in the document
-\icmlkeywords{boring formatting information, machine learning, ICML}
+\icmlkeywords{image outpainting, generative adversarial network, context encoder, computer vision, deep learning, machine learning, ICML}
 
 \vskip 0.3in
 ]
@@ -117,7 +118,7 @@ Describe the computational approach -- based obviously on neural networks -- tha
     \begin{tabular}{c|c|c}  
     \hline
     \textbf{layer} & \textbf{output size} & \textbf{parameters}\\ 
-    \hline
+    \hline \hline
       Conv & 16$\times$192$\times$192 & 5$\times$5, stride=1 \\
     \hline
       ResBlock & 128$\times$96$\times$96 & 3$\times$3, stride=2 \\
@@ -173,8 +174,8 @@ Describe the computational approach -- based obviously on neural networks -- tha
   \centering  
     \begin{tabular}{c|c}  
     \hline
-    \textbf{layer} & \textbf{parameters}\\ 
-    \hline
+    \textbf{Layer} & \textbf{Parameters}\\ 
+    \hline \hline
       Conv & 3$\times$3, stride=\(s_{in}\) \\
     \hline
       ReLU & None \\
@@ -196,8 +197,8 @@ Describe the computational approach -- based obviously on neural networks -- tha
   \centering  
     \begin{tabular}{c|c}  
     \hline
-    \textbf{layer} & \textbf{parameters}\\ 
-    \hline
+    \textbf{Layer} & \textbf{Parameters}\\ 
+    \hline \hline
       Conv & 3$\times$3, stride=2 \\
     \hline
       InstanceNorm & None \\
@@ -233,13 +234,34 @@ Describe the computational approach -- based obviously on neural networks -- tha
     
     \end{tabular}
   
-  \caption{Architecture of global and local discriminators.} 
+  \caption{Architecture of global and local discriminators $D_G$ and $D_L$, respectively.} 
   \label{tab:3}
   \label{table3} 
 \end{table}
 
 \section{Experiment}
 Describe the computational experiments you conducted to validate the approach you took.
+
+Training is done for 50 epochs, with a fixed learning rate of $\alpha=0.0003$ and two Adam optimizers with $\beta_1=0.5, \beta_2=0.999$, following the same hyperparameters proposed in Van Hoorick 2020 \cite{van_hoorick_image_2020} The loss functions are as follows:
+\begin{align}
+  L_{rec} &= ||x-G(x)||_1 \\
+  L_{adv} &= ||D(G(x))-1||_2^2 \\
+  L_G &= \lambda_{rec}L_{rec} + \lambda_{adv}L_{adv} \\
+  L_D &= ||D(x)-1||_2^2 + ||D(G(x))-0||_2^2
+\end{align}
+
+We apply a time based remedy to the generator loss function that punishes the generator heavier for bad outputs as time progresses.
+
+\begin{align}
+  \lambda_{adv}(n) = \begin{cases}
+    0.001, & \text{if }n\leq10 \\
+    0.005, & \text{if }10<n\leq30 \\
+    0.015, & \text{otherwise}
+  \end{cases}
+  \label{eq:loss_adv}
+\end{align}
+
+Since humans still perform vastly greater than deep learning networks at this task we conclude our experiment with a qualitative discussion about the quality of hallucinations. As many previously mentioned models in this domain create noise or lines that are clearly out of place in the hallucinations, we aim to manually evaluate whether our model rectifies this issue or these manifestations are still present.
 
 \section{Results}
 Describe the results of the experiments, including their immediate implications (e.g., ``the result suggests that technique A performs better
@@ -251,7 +273,7 @@ Describe limitations of your work as well as further-ranging implications (e.g.,
 \section{Conclusions and Future Work}
 Briefly summarize the key findings your paper and point out interesting directions for future inquiry.
 
-\bibliography{example_paper}
+\bibliography{paper.bib}
 \bibliographystyle{cs541}
 
 \end{document} 
