@@ -6,7 +6,7 @@ Our work builds upon the context encoder baseline model for image outpainting pr
 We generate a 192x192 image from the given ground truth of the same size, masked to only show 128x128 of the target. We qualitatively evaluate improvements to the generative network and discriminator including implementing super-resolution upscaling techniques.
 
 ## Examples
-TODO
+![Example of outpainting models](/tex/figs/fig2/fig2_constructed.png)
 
 ## Usage
 Our models are separated in their respective folders, but each use a [train](http://data.csail.mit.edu/places/places365/train_256_places365standard.tar) and [val](http://data.csail.mit.edu/places/places365/val_256.tar) folder in the repository root trainings, which contain the MIT Places365-Standard dataset.
