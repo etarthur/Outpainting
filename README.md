@@ -1,4 +1,4 @@
-# Enhanced Residual Networks for Context-based Image Outpainting 
+# [Enhanced Residual Networks for Context-based Image Outpainting](https://arxiv.org/abs/2005.06723)
 Our work builds upon the context encoder baseline model for image outpainting proposed in 
 [Image Outpaintng and Harmonization using Generative Adversarial Networks](https://arxiv.org/abs/1912.10960). This project was for the class *Deep Learning* by Professor Jacob Whitehill at Worcester Polytechnic Institute.
 
